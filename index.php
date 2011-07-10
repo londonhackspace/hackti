@@ -22,7 +22,14 @@
  +-------------------------------------------------------------------------+
 */
 
+$guest_account = true;
 include("./include/auth.php");
+
+if (db_fetch_cell("select id from user_auth where username='" . read_config_option("guest_user") . "'") == $_SESSION["sess_user_id"]) {
+  header('Location: graph_view.php');
+  exit;
+}
+
 include("./include/top_header.php");
 
 ?>
