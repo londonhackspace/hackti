@@ -367,16 +367,16 @@ if ((sizeof($polling_items) > 0) && (read_config_option("poller_enabled") == "on
 						$item["snmp_context"], $item["snmp_port"], $item["snmp_timeout"], read_config_option("snmp_retries"), SNMP_CMDPHP);
 
 					/* remove any quotes from string */
-					$output = strip_quotes($output);
+					$invalid_output = $output = strip_quotes($output);
 
 					if (!validate_result($output)) {
-						if (strlen($output) > 20) {
+						if (strlen($invalid_output) > 20) {
 							$strout = 20;
 						} else {
-							$strout = strlen($output);
+							$strout = strlen($invalid_output);
 						}
 
-						cacti_log("Host[$host_id] DS[$data_source] WARNING: Result from SNMP not valid.  Partial Result: " . substr($output, 0, $strout), $print_data_to_stdout);
+						cacti_log("Host[$host_id] DS[$data_source] WARNING: Result from SNMP not valid.  Partial Result: " . substr($invalid_output, 0, $strout), $print_data_to_stdout);
 						$output = "U";
 					}
 				}
@@ -390,16 +390,16 @@ if ((sizeof($polling_items) > 0) && (read_config_option("poller_enabled") == "on
 				$output = trim(exec_poll($item["arg1"]));
 
 				/* remove any quotes from string */
-				$output = strip_quotes($output);
+				$invalid_output = $output = strip_quotes($output);
 
 				if (!validate_result($output)) {
-					if (strlen($output) > 20) {
+					if (strlen($invalid_output) > 20) {
 						$strout = 20;
 					} else {
-						$strout = strlen($output);
+						$strout = strlen($invalid_output);
 					}
 
-					cacti_log("Host[$host_id] DS[$data_source] WARNING: Result from CMD not valid.  Partial Result: " . substr($output, 0, $strout), $print_data_to_stdout);
+					cacti_log("Host[$host_id] DS[$data_source] WARNING: Result from CMD not valid.  Partial Result: " . substr($invalid_output, 0, $strout), $print_data_to_stdout);
 				}
 
 				if (read_config_option("log_verbosity") >= POLLER_VERBOSITY_MEDIUM) {
@@ -412,16 +412,16 @@ if ((sizeof($polling_items) > 0) && (read_config_option("poller_enabled") == "on
 					$output = trim(str_replace("\n", "", exec_poll_php($item["arg1"], $using_proc_function, $pipes, $cactiphp)));
 
 					/* remove any quotes from string */
-					$output = strip_quotes($output);
+					$invalid_output = $output = strip_quotes($output);
 
 					if (!validate_result($output)) {
-						if (strlen($output) > 20) {
+						if (strlen($invalid_output) > 20) {
 							$strout = 20;
 						} else {
-							$strout = strlen($output);
+							$strout = strlen($invalid_output);
 						}
 
-						cacti_log("Host[$host_id] DS[$data_source] WARNING: Result from SERVER not valid.  Partial Result: " . substr($output, 0, $strout), $print_data_to_stdout);
+						cacti_log("Host[$host_id] DS[$data_source] WARNING: Result from SERVER not valid.  Partial Result: " . substr($invalid_output, 0, $strout), $print_data_to_stdout);
 					}
 
 					if (read_config_option("log_verbosity") >= POLLER_VERBOSITY_MEDIUM) {
