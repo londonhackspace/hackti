@@ -1,5 +1,9 @@
 #!/usr/bin/perl
 
+open(F,'>>ping.log');
+print F $ARGV[0], "\n";
+close(F);
+
 # take care for tcp:hostname or TCP:ip@
 $host = $ARGV[0];
 $host =~ s/tcp:/$1/gis;
