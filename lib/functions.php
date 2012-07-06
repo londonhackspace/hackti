@@ -880,7 +880,9 @@ function strip_quotes($result) {
 	/* first strip all single and double quotes from the string */
 	$result = trim(trim($result), "'\"");
 
-	/* clean off ugly non-numeric data */
+    //return($result);
+
+	/* Remove any trailing non-numeric data */
 	if ((!is_numeric($result)) && ($result != "U")) {
 		$len = strlen($result);
 		for($a=$len-1; $a>=0; $a--){

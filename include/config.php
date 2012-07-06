@@ -26,8 +26,8 @@
 $database_type = "mysql";
 $database_default = "cacti";
 $database_hostname = "localhost";
-$database_username = "cactiuser";
-$database_password = "cactiuser";
+$database_username = "cacti";
+$database_password = "fjv!ge5yp";
 $database_port = "3306";
 
 /* Default session name - Session name must contain alpha characters */
