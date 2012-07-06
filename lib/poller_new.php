@@ -28,29 +28,39 @@
 function exec_poll($command) {
 	global $config;
 
-	if (function_exists("popen")) {
+	if (function_exists("proc_open")) {
+
 		if ($config["cacti_server_os"] == "unix") {
-			$fp = popen($command, "r");
-			//$fp = popen("$command 2>&1", "r");
+			$stdinmode = 'r';
 		}else{
-			$fp = popen($command, "rb");
-			//$fp = popen("$command 2>&1", "rb");
+			$stdinmode = 'rb';
 		}
+		$proc = proc_open($command,
+			array(
+				0 => array('pipe', $stdinmode),
+				1 => array('pipe', 'w'),
+				2 => array('pipe', 'w'),
+			),
+			$pipes);
 
 		/* return if the popen command was not successfull */
-		if (!is_resource($fp)) {
-			cacti_log("WARNING; Problem with POPEN command.");
+		if (!is_resource($proc)) {
+			cacti_log("WARNING: Problem with proc_open.");
 			return "U";
 		}
 
-		$output = fgets($fp, 4096);
+        /* See the following if this code locks up (not a regression)
+         * http://www.php.net/manual/en/function.proc-open.php#64116
+		 */
+		$output = fgets($pipes[1], 4096);
+		$error = fgets($pipes[2], 4096);
 
-		pclose($fp);
+		proc_close($proc);
 	}else{
 		$output = `$command`;
 	}
 
-	return $output;
+	return array($output, $error);
 }
 
 /* exec_poll_php - sends a command to the php script server and returns the
