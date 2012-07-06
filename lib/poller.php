@@ -31,8 +31,10 @@ function exec_poll($command) {
 	if (function_exists("popen")) {
 		if ($config["cacti_server_os"] == "unix") {
 			$fp = popen($command, "r");
+			//$fp = popen("$command 2>&1", "r");
 		}else{
 			$fp = popen($command, "rb");
+			//$fp = popen("$command 2>&1", "rb");
 		}
 
 		/* return if the popen command was not successfull */
